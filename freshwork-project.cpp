@@ -1,15 +1,28 @@
-#include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
-struct student{
-    int id;
-    char name[20];
+struct token{
+    string id;
+    string value;
 };
 int main()
 {
     int a,b;
    // cin>>a;
-    student s;
+   set<string>s1;
+    token s;
+    ifstream tdata;
+    tdata.open("student.txt");
+    if(tdata.eof()!=0){
+    tdata >> s.id;
+    tdata >> s.value;
+    while(!tdata.eof())
+    {
+      s1.insert(s.id);
+     tdata >> s.id;
+     tdata >> s.value;
+    }
+    }
+    tdata.close();
     while(1){
         cout<<"1.Write in record"<<endl;
         cout<<"2.Read in record"<<endl;
@@ -23,17 +36,22 @@ int main()
          //   cin>>a;
             case 1:
             {
-                cout<<"Enter student ID"<<endl;
+                cout<<"Enter key"<<endl;
                 cin>>s.id;
-                cout<<"Enter student Name"<<endl;
-                cin>>s.name;
+                if(s1.find(s.id)!=s1.end())
+                cout<<"key value already exist"<<endl;
+                else{
+                    s1.insert(s.id);
+                cout<<"Enter value"<<endl;
+                cin>>s.value;
                 ofstream sdata;
                 sdata.open("student.txt",ios :: app);
                 sdata << s.id;
                 sdata << endl;
-                sdata << s.name;
+                sdata << s.value;
                 sdata << endl;
                 sdata.close();
+                }
                 break;
             }
             case 2:
@@ -41,20 +59,20 @@ int main()
                 ifstream tdata;
                  tdata.open("student.txt");
                  tdata >> s.id;
-                 tdata >> s.name;
+                 tdata >> s.value;
                  while(!tdata.eof())
                  {
                       cout<<"Student Id is:"<<s.id<<endl;
-                      cout<<"Student Name:"<<s.name<<endl;
+                      cout<<"Student Name:"<<s.value<<endl;
                       tdata >> s.id;
-                      tdata >> s.name;
+                      tdata >> s.value;
                  }
                  tdata.close();
                 break;
             }
             case 3:
             {
-               cout<<"Enter id of Student whom you want to delete"<<endl;
+                cout<<"Enter id of Student whom you want to delete"<<endl;
                 int id;
                 cin>>id;
                 ifstream is("student.txt");
@@ -87,6 +105,10 @@ int main()
                                 ofs << ff ;
                                 ofs << ss;
                             }
+                            else{
+                                string tempp = to_string(id);
+                                s1.erase(tempp);
+                            }
                             tempid = 0;
                             ss = "";
                             ff = "";
@@ -104,8 +126,8 @@ int main()
                 remove("student.txt");
                 rename("temp.txt", "student.txt");
                 break;
-     }
-   case 4:
+            }
+            case 4:
             {
                 chk = true;
                 break;
